@@ -5,7 +5,37 @@ class Conta
 {
   public string $cpfTitular; //atributos da classe para o objeto
   public string $nomeTitular;
-  public float $saldo;
+  public float $saldo = 0;
+  //dados
+
+  public function sacar(float $valorASacar): void
+  {
+    if ($valorASacar > $this->saldo) {
+      echo "Saldo indisponível";
+      return;
+    }
+    $this->saldo -= $valorASacar;
+  } //função de sacar dentro do molde da conta. o $this serve para modificar o atributo da objeto que o está chamando//
+
+  public function depositar(float $valorADepositar): void //não devolve, não tem retorno
+  {
+    if ($valorADepositar < 0) { //evitar o uso de else, atenção ao uso do return, mas pode usar else
+      echo "O valor precisa ser positivo";
+      return;
+    }
+    $this->saldo += $valorADepositar;
+  }
+
+  public function transferir(float $valorATransferir, Conta $contaDestino): void
+  {
+    if ($valorATransferir > $this->saldo) {
+      echo "Saldo indisponível";
+      return;
+    }
+    $this->sacar($valorATransferir);
+    $contaDestino->depositar($valorATransferir);
+  }
+  //comportamentos
 }
 
 //As variáveis possuem um endereço para a classe, não possuem um valor inteiro, e por isso é possível ter mais que uma variável apontando para o mesmo lugar
@@ -23,8 +53,14 @@ $segundaConta->saldo = '200';
 $teste = $segundaConta;
 $teste->saldo = 2000;
 
-echo $segundaConta->saldo;
+$segundaConta->depositar(-150);
 
+$contaTeste = new Conta();
+$contaTeste->depositar(5080);
+$contaTeste2 = new Conta();
+$contaTeste->transferir(200, $contaTeste2);
+
+echo $contaTeste->saldo;
 
 /*
 exemplo de função criar conta:
