@@ -1,12 +1,40 @@
 <?php
 
+//propriedades privadas e métodos públicos
 //definir classe é prática de OO, sempre primeira maiscula - nela será definido os moldes que todo OBJETO/INSTANCIA conterá//
 class Conta
 {
-  public string $cpfTitular; //atributos da classe para o objeto
-  public string $nomeTitular;
-  public float $saldo = 0;
+  private string $cpfTitular; //atributos da classe para o objeto
+  private string $nomeTitular; //depois de se tornar privado, o usuario não tem mais acesso
+  private float $saldo = 0;
   //dados
+
+  public function defineCpfTitular(string $cpf)
+  {
+    $this->cpfTitular = $cpf;
+  }
+
+  public function recuperarCpfTitular(): string
+  {
+    return $this->cpfTitular;
+  }
+
+  public function defineNomeTitular(string $nome)
+  {
+    $this->nomeTitular = $nome;
+  }
+
+  public function recuperarNomeTitular(): string
+  {
+    return $this->nomeTitular;
+  }
+
+  public function recuperarSaldo(): float
+  {
+    return $this->saldo;
+  }
+
+
 
   public function sacar(float $valorASacar): void
   {
