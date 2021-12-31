@@ -1,36 +1,25 @@
 <?php
 
-//propriedades privadas e métodos públicos
-//definir classe é prática de OO, sempre primeira maiscula - nela será definido os moldes que todo OBJETO/INSTANCIA conterá//
-class Conta //substantivo
+class Conta
 {
-  private string $cpfTitular; //atributos da classe para o objeto
-  private string $nomeTitular; //depois de se tornar privado, o usuario não tem mais acesso - encapsulamento
+  private $titular;
   private float $saldo;
-  private static $numeroDeContas = 0; //atenção
-  //dados
+  private static $numeroDeContas = 0;
 
-  public function __construct(string $cpfTitular, string $nomeTitular) //metodo construct é conectado com new Conta()
+  public function __construct(Titular $titular)
   {
-    $this->cpfTitular = $cpfTitular;
-    $this->nomeTitular = $nomeTitular;
-    $this->validaNomeTitular($nomeTitular);
+    $this->titular = $titular;
     $this->saldo = 0;
 
-    self::$numeroDeContas++; //atenção //ou Conta
+    self::$numeroDeContas++;
   }
 
-  public function recuperarCpfTitular(): string //get
+  public  function __destruct()
   {
-    return $this->cpfTitular;
+    self::$numeroDeContas--;
   }
 
-  public function recuperarNomeTitular(): string //get
-  {
-    return $this->nomeTitular;
-  }
-
-  public function recuperarSaldo(): float //get
+  public function recuperarSaldo(): float
   {
     return $this->saldo;
   }
@@ -42,11 +31,11 @@ class Conta //substantivo
       return;
     }
     $this->saldo -= $valorASacar;
-  } //função de sacar dentro do molde da conta. o $this serve para modificar o atributo da objeto que o está chamando//
+  }
 
-  public function depositar(float $valorADepositar): void //não devolve, não tem retorno
+  public function depositar(float $valorADepositar): void
   {
-    if ($valorADepositar < 0) { //evitar o uso de else, atenção ao uso do return, mas pode usar else
+    if ($valorADepositar < 0) {
       echo "O valor precisa ser positivo";
       return;
     }
@@ -63,54 +52,8 @@ class Conta //substantivo
     $contaDestino->depositar($valorATransferir);
   }
 
-  private function validaNomeTitular(string $nomeTitular)
-  {
-    if (strlen($nomeTitular) < 6) {
-      echo "Favor inserir nome e sobrenome";
-      exit();
-    }
-  }
-
   public static function recuperarNumeroDeContas(): int
   {
-    return self::$numeroDeContas; //ou Conta
+    return self::$numeroDeContas;
   }
-  //comportamentos
 }
-
-//As variáveis possuem um endereço para a classe, não possuem um valor inteiro, e por isso é possível ter mais que uma variável apontando para o mesmo lugar
-//Objeto
- /*     $primeiraConta = new Conta();
-      $primeiraConta->cpfTitular = '123.456.789-10';
-      $primeiraConta->nomeTitular = 'Vinicius Viana';
-      $primeiraConta->saldo = '5000';
-
-      $segundaConta = new Conta();
-      $segundaConta->cpfTitular = '987.654.321-41';
-      $segundaConta->nomeTitular = 'Alan Araujo';
-      $segundaConta->saldo = '200';
-
-      $teste = $segundaConta;
-      $teste->saldo = 2000;
-
-      $segundaConta->depositar(-150);
-
-      $contaTeste = new Conta();
-      $contaTeste->depositar(5080);
-      $contaTeste2 = new Conta();
-      $contaTeste->transferir(200, $contaTeste2);
-não vou mais utilizar pela mudança na regra de negócio, mas fica o exemplo
-
-
-/*
-exemplo de função criar conta:
-function criarConta(string $cpf, string $nomeTitular, float $saldo): array
-{
-  return [
-    $cpf => [
-      'titular' => $nomeTitular,
-      'saldo' => $saldo
-    ]
-  ];
-}
-*/
